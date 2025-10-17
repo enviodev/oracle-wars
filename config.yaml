@@ -11,7 +11,7 @@ contracts:
   - name: TransparentUpgradeableProxy
     handler: src/EventHandlers.ts
     events:
-      - event: ValueUpdate(uint256 value, bytes32 dataFeedId, uint256 updatedAt)
+      - event: RoundCreated(uint256 value, uint256 updaterTimestamp, bytes32 dataFeedId, uint256 blockTimestamp, uint256 roundId, uint256 updaterId)
 
 # Enable unordered multichain mode for parallel processing
 unordered_multichain_mode: true
@@ -35,7 +35,7 @@ networks:
     contracts:
       - name: TransparentUpgradeableProxy
         address:
-          - 0xD962A6544bB645EA2f1678034788261E9417e9BC
+          - 0x16dE4E3E6FaA80B9f8c182FF906A1eBFa9dDaeb5
 
 rollback_on_reorg: false
 

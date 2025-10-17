@@ -28,7 +28,7 @@ AccessControlledOCR2Aggregator.AnswerUpdated.handler(
   }
 );
 
-TransparentUpgradeableProxy.ValueUpdate.handler(async ({ event, context }) => {
+TransparentUpgradeableProxy.RoundCreated.handler(async ({ event, context }) => {
   // Only process events with the specified dataFeedId
   if (
     event.params.dataFeedId ===
@@ -42,7 +42,7 @@ TransparentUpgradeableProxy.ValueUpdate.handler(async ({ event, context }) => {
       id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
       value: event.params.value,
       dataFeedId: event.params.dataFeedId,
-      updatedAt: event.params.updatedAt,
+      updatedAt: event.params.updaterTimestamp,
       nativeTokenUsed: nativeTokenUsed,
     };
 
