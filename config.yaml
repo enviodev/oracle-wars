@@ -28,14 +28,14 @@ networks:
   #       address:
   #         - 0xd72a6BA4a87DDB33e801b3f1c7750b2d0911fC6C
 
-  - id: 6342
+  - id: 6343
     hypersync_config:
-      url: https://megaeth-testnet.hypersync.xyz
-    start_block: 19531000
+      url: https://megaeth-testnet2.hypersync.xyz
+    start_block: 2715000
     contracts:
       - name: TransparentUpgradeableProxy
         address:
-          - 0x16dE4E3E6FaA80B9f8c182FF906A1eBFa9dDaeb5
+          - 0x9f0B0AE7a3b6671129633121149b7059d004EDa4
 
 rollback_on_reorg: false
 
