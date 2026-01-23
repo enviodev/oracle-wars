@@ -22,7 +22,7 @@
     "mocha": "10.2.0"
   },
   "dependencies": {
-    "envio": "v2.32.0"
+    "envio": "v2.32.6"
   },
   "optionalDependencies": {
     "generated": "./generated"
