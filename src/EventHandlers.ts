@@ -8,7 +8,7 @@ import {
 
 const VALUE_UPDATE_DELETE_OFFSET = 5000n;
 
-TransparentUpgradeableProxy.RoundCreated.handler(async ({ event, context }) => {
+TransparentUpgradeableProxy.FastValueUpdate.handler(async ({ event, context }) => {
   const selectedFeeds = [
     // MegaETH Testnet Feeds
     "0x4254430000000000000000000000000000000000000000000000000000000000", // BTC/USD
@@ -51,21 +51,32 @@ TransparentUpgradeableProxy.RoundCreated.handler(async ({ event, context }) => {
 
   // If entity count exceeds OFFSET, delete the oldest one
   if (currentIndex >= VALUE_UPDATE_DELETE_OFFSET) {
+
     const deleteIndex = currentIndex - VALUE_UPDATE_DELETE_OFFSET;
     const toDelete =
       await context.TransparentUpgradeableProxy_ValueUpdate.getWhere.deleteIndex.eq(
         deleteIndex,
       );
     if (toDelete.length > 0) {
-      context.TransparentUpgradeableProxy_ValueUpdate.deleteUnsafe(
-        toDelete[0].id,
-      );
+      for (const entity of toDelete) {
+        context.TransparentUpgradeableProxy_ValueUpdate.deleteUnsafe(entity.id);
+      }
     }
+    context.TrackIndex.set({
+      ...trackIndex,
+      valueUpdateDeleteIndex: trackIndex.valueUpdateDeleteIndex + 1n,
+    });
   }
+
+  const newTrackIndex = await context.TrackIndex.getOrCreate({
+    id: event.params.dataFeedId,
+    valueUpdateIndex: 0n,
+    valueUpdateDeleteIndex: 0n,
+  });
 
   // persist index increment
   context.TrackIndex.set({
-    ...trackIndex,
+    ...newTrackIndex,
     valueUpdateIndex: currentIndex + 1n,
   });
 });

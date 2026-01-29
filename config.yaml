@@ -2,17 +2,6 @@
 name: envio-indexer
 description: Chainlink Feeds Indexer
 
-# Global contract definitions for multi-chain support
-contracts:
-  - name: AccessControlledOCR2Aggregator
-    handler: src/EventHandlers.ts
-    events:
-      - event: AnswerUpdated(int256 indexed current, uint256 indexed roundId, uint256 updatedAt)
-  - name: TransparentUpgradeableProxy
-    handler: src/EventHandlers.ts
-    events:
-      - event: RoundCreated(uint256 value, uint256 updaterTimestamp, bytes32 dataFeedId, uint256 blockTimestamp, uint256 roundId, uint256 updaterId)
-
 # Enable unordered multichain mode for parallel processing
 unordered_multichain_mode: true
 
@@ -31,9 +20,13 @@ networks:
   - id: 6343
     hypersync_config:
       url: https://megaeth-testnet2.hypersync.xyz
-    start_block: 9452000
+    start_block: 9884114
     contracts:
       - name: TransparentUpgradeableProxy
+        abi_file_path: ./abi/redstone.json
+        handler: src/EventHandlers.ts
+        events:
+          - event: FastValueUpdate
         address:
           - 0x9f0B0AE7a3b6671129633121149b7059d004EDa4
 
