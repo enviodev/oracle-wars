@@ -1,14 +1,10 @@
 /*
  * Please refer to https://docs.envio.dev for a thorough guide on all Envio indexer features
  */
-import {
-  AccessControlledOCR2Aggregator,
-  AccessControlledOCR2Aggregator_AnswerUpdated,
-  TransparentUpgradeableProxy,
-  TransparentUpgradeableProxy_ValueUpdate,
-} from "generated";
+import { indexer, AccessControlledOCR2Aggregator, AccessControlledOCR2Aggregator_AnswerUpdated, TransparentUpgradeableProxy, TransparentUpgradeableProxy_ValueUpdate } from "envio";
 
-AccessControlledOCR2Aggregator.AnswerUpdated.handler(
+indexer.onEvent(
+  { contract: "AccessControlledOCR2Aggregator", event: "AnswerUpdated" },
   async ({ event, context }) => {
     // Calculate native token cost (gasUsed × effectiveGasPrice)
     const nativeTokenUsed =
@@ -28,7 +24,9 @@ AccessControlledOCR2Aggregator.AnswerUpdated.handler(
   }
 );
 
-TransparentUpgradeableProxy.ValueUpdate.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "TransparentUpgradeableProxy", event: "ValueUpdate" },
+  async ({ event, context }) => {
   // Only process events with the specified dataFeedId
   if (
     event.params.dataFeedId ===
@@ -48,4 +46,5 @@ TransparentUpgradeableProxy.ValueUpdate.handler(async ({ event, context }) => {
 
     context.TransparentUpgradeableProxy_ValueUpdate.set(entity);
   }
-});
+}
+);
